@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import Link from 'next/link'
+import getStripe from '../Lib/getStripe'
 
 import {
   AiOutlineMinus,
@@ -24,7 +25,25 @@ export default function Cart() {
     onRemove,
   } = useStateContext()
 
-  const handleCheckout = () => {}
+  const handleCheckout = async () => {
+    const stripe = await getStripe()
+
+    const response = await fetch('/api/stripe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cartItems),
+    })
+
+    if (response.statusCode === 500) return
+
+    const data = await response.json()
+
+    toast.loading('Redirecting...')
+
+    stripe.redirectToCheckout({ sessionId: data.id })
+  }
 
   return (
     <div className='cart-wrapper' ref={cartRef}>
