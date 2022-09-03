@@ -60,7 +60,7 @@ export const StateContext = ({ children }) => {
   const toggleCartQuantity = (id, value) => {
     foundProduct = cartItems.find((item) => item._id === id)
     index = cartItems.findIndex((product) => product._id === id)
-    const newCartItems = cartItems.filter((item) => item._id !== id)
+    // const newCartItems = cartItems.filter((item) => item._id !== id)
 
     if (value === 'inc') {
       // setCartItems([
